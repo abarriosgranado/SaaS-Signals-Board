@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SaaS Signals Board</title>
+  <style>
+    :root {
+      --ink: #141820;
+      --muted: #647084;
+      --line: #d8dee9;
+      --paper: #ffffff;
+      --soft: #f4f7fb;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --teal: #0f9f8f;
+      --orange: #e27a32;
+      --red: #c93333;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #eef2f7;
+    }
+    a { color: inherit; }
+    .wrap {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+    header {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero {
+      min-height: 76vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 52px 0 44px;
+    }
+    .hero-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 500px;
+      align-items: center;
+      gap: 56px;
+    }
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--blue);
+      font-size: .82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(3.1rem, 7vw, 6.8rem);
+      line-height: .92;
+      letter-spacing: 0;
+    }
+    .lead {
+      max-width: 840px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.22rem);
+      line-height: 1.55;
+    }
+    .actions {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      margin-top: 0;
+      min-height: 316px;
+      justify-content: center;
+      padding: 28px;
+      border: 1px solid #dbe3f0;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+      box-shadow: 0 18px 44px rgba(31, 41, 55, .08);
+    }
+    .actions-label {
+      margin: 0 0 3px;
+      color: var(--blue);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .actions-copy {
+      max-width: 390px;
+      margin: -2px 0 12px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font-weight: 750;
+      text-decoration: none;
+    }
+    .button.primary {
+      width: 100%;
+      min-width: 0;
+      min-height: 84px;
+      padding: 22px 28px;
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+      font-size: 1.28rem;
+      font-weight: 800;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, .22);
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .button.primary:hover {
+      background: #1d4ed8;
+      box-shadow: 0 14px 28px rgba(37, 99, 235, .28);
+      transform: translateY(-1px);
+    }
+    .actions .button:not(.primary) {
+      width: 100%;
+      min-height: 60px;
+      padding: 15px 18px;
+      border-color: #d8e1ef;
+      background: #fff;
+      color: #1f2937;
+      font-size: 1rem;
+      font-weight: 750;
+      transition: border-color .18s ease, background .18s ease;
+    }
+    .actions .button:not(.primary):hover {
+      border-color: #b8c5d8;
+      background: #f8fafc;
+    }
+    .hero-summary {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 40px;
+    }
+    .hero-summary .stat {
+      background: var(--soft);
+    }
+    section {
+      padding: 46px 0;
+    }
+    .section-title {
+      max-width: 780px;
+      margin: 0 0 18px;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+    .section-copy {
+      max-width: 820px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .stat {
+      min-height: 122px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 12px;
+    }
+    .stat strong {
+      display: block;
+      font-size: clamp(1.4rem, 2.2vw, 2rem);
+      line-height: 1;
+    }
+    .stat-list {
+      display: grid;
+      gap: 7px;
+      color: var(--ink);
+      font-size: clamp(.9rem, 1vw, 1rem);
+      font-weight: 750;
+      line-height: 1.25;
+    }
+    .stat-list em {
+      color: var(--muted);
+      font-style: normal;
+      font-weight: 650;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+      align-items: stretch;
+    }
+    .panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 360px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+    .panel p, .panel li {
+      color: var(--muted);
+      font-size: .94rem;
+      line-height: 1.5;
+    }
+    .panel p { margin: 0; }
+    .panel ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .panel-note {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8f0;
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.45;
+    }
+    .panel-note strong {
+      color: var(--ink);
+    }
+    .signal-settings {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .setting-note {
+      min-height: 126px;
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+    .setting-note strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: .92rem;
+    }
+    .action-panel {
+      margin-top: 24px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--blue);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .action-panel h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+    }
+    .action-panel p {
+      max-width: 900px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .kpi-note {
+      max-width: 760px;
+      margin-top: 22px;
+      padding: 0 0 0 18px;
+      border: 0;
+      border-left: 3px solid #9bb7f5;
+      border-radius: 0;
+      background: transparent;
+    }
+    .kpi-note h3 {
+      margin: 0 0 6px;
+      font-size: .95rem;
+    }
+    .kpi-note p {
+      max-width: 720px;
+      font-size: .95rem;
+      line-height: 1.55;
+    }
+    .metric-groups {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .metric-group {
+      min-height: 220px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .metric-group span {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .metric-chip-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .metric-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--ink);
+      font-size: .96rem;
+      font-weight: 800;
+    }
+    .metric-detail {
+      display: grid;
+      gap: 12px;
+    }
+    .metric-detail h3 {
+      margin: 0;
+      font-size: 1.08rem;
+      line-height: 1.15;
+    }
+    .metric-detail p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+    .metric-detail code {
+      display: inline-block;
+      padding: 5px 7px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      background: #f8fafc;
+      color: #334155;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .78rem;
+      line-height: 1.35;
+    }
+    .metric-note {
+      max-width: 900px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: .96rem;
+      line-height: 1.6;
+    }
+    .formula {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--soft);
+    }
+    .formula-row {
+      display: grid;
+      grid-template-columns: 76px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      min-height: 34px;
+      padding: 7px 8px;
+      border: 1px solid #e5eaf2;
+      border-radius: 7px;
+      background: #fff;
+    }
+    .formula-label {
+      color: var(--muted);
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .formula-text {
+      color: #334155;
+      font-size: .82rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .formula-text em {
+      color: var(--blue);
+      font-style: normal;
+      font-weight: 850;
+    }
+    .band-key {
+      display: grid;
+      grid-template-columns: repeat(4, max-content);
+      gap: 12px 20px;
+      margin-top: 14px;
+    }
+    .panel .band-key {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .band-key-label {
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .band-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 32px;
+      padding: 7px 9px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .swatch {
+      width: 22px;
+      height: 3px;
+      border-radius: 999px;
+      flex: 0 0 auto;
+    }
+    .swatch.actual { height: 4px; background: #111827; }
+    .swatch.central { background: #7aa7f7; }
+    .swatch.upper { background: #f59e6b; }
+    .swatch.lower { background: #5ccfc4; }
+    .swatch.signal {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #dc2626;
+    }
+    .band-item.signal-item {
+      justify-self: center;
+      min-width: 0;
+      width: 100%;
+      justify-content: center;
+    }
+    .example-block {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .example-block h3 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+    }
+    .example-block > p {
+      max-width: 860px;
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.55;
+    }
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .example-card {
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: var(--soft);
+    }
+    .example-card span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue);
+      font-size: .72rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .example-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+    .example-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.45;
+    }
+    .cta-band {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+    .cta-band h2 {
+      margin: 0 0 8px;
+      font-size: 1.45rem;
+    }
+    .cta-band p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    footer {
+      padding: 24px 0 34px;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+    @media (max-width: 900px) {
+      .hero { min-height: auto; }
+      .hero-top { grid-template-columns: 1fr; align-items: start; }
+      .actions { margin-top: 4px; max-width: 520px; min-height: auto; }
+      .hero-summary { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .metric-groups { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .signal-settings { grid-template-columns: 1fr; }
+      .example-grid { grid-template-columns: 1fr; }
+      .band-key { grid-template-columns: repeat(2, max-content); }
+      .cta-band { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 20px, 1160px); }
+      .button.primary { min-width: 100%; }
+      .hero-summary { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .metric-groups { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+      .band-key { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <div class="hero-top">
+        <div>
+          <p class="eyebrow">Technical analysis for SaaS operating metrics</p>
+          <h1>SaaS Signals Board</h1>
+          <p class="lead">A Python data project that adapts technical-analysis logic to SaaS operating metrics. It turns subscription data into period-based growth, churn and revenue-quality signals, then translates those signals into plain business readings. The final board combines range breaks, momentum, persistence, baseline-shift detection and known-event annotations so teams can investigate unusual movements before they become larger revenue, retention or operating problems.</p>
+        </div>
+        <div class="actions">
+          <p class="actions-label">Interactive board</p>
+          <p class="actions-copy">Open the working view or export the prepared monthly metric table.</p>
+          <a class="button primary" href="dashboard.html">Open SaaS Signals Board</a>
+          <a class="button" href="monthly_metrics.csv">Download monthly metrics</a>
+        </div>
+      </div>
+      <div class="hero-summary">
+        <div class="stat"><span>Period analyzed</span><strong>Jan 2023 - Dec 2024</strong></div>
+        <div class="stat"><span>Data source</span><strong>Kaggle</strong></div>
+        <div class="stat"><span>Data frequency</span><strong>Monthly data</strong></div>
+        <div class="stat"><span>Signal method</span><div class="stat-list"><div>Bollinger Bands <em>= Range signal</em></div><div>Momentum <em>= Previous + same period last year</em></div><div>Persistence <em>= Signal duration</em></div><div>Baseline Shift <em>= New normal check</em></div></div></div>
+        <div class="stat"><span>Output</span><strong>Narrative signal board</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap">
+      <h2 class="section-title">Why this project exists</h2>
+      <p class="section-copy">SaaS dashboards usually show what happened: MRR, ARR, churn, ARPU, LTV, CAC, MAU, customer growth, retention, expansion revenue or NRR. Those views are useful, but often descriptive. SaaS Signals Board adds a second layer: is the movement normal for this metric, is it deteriorating or improving, is it isolated or persistent, and is the baseline itself changing? For fast-growing SaaS companies, the board applies range signals mainly to rates and changes rather than raw revenue levels, because absolute MRR can rise quickly without mean-reverting.</p>
+      <div class="action-panel">
+        <h3>From dashboard number to business story</h3>
+        <p>The goal is not to predict the future. The goal is to detect unusual movements early enough to investigate the cause, react faster and prevent small operating signals from becoming larger financial or business problems. The Metric Signal Summary is written as an executive read: what is happening, why it matters, whether it is fresh or persistent, and what type of driver deserves attention.</p>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <h2 class="section-title">How the signals work</h2>
+      <p class="section-copy">The board is built around four complementary questions. Is the metric outside its normal operating range? Is it improving or deteriorating versus the previous period and versus the same period last year? Is the abnormal movement isolated or repeating? Has the baseline itself moved to a new level? A period can be a day, week, month or quarter depending on the frequency selected in the board.</p>
+      <div class="grid">
+        <article class="panel">
+          <h3>Bollinger Bands</h3>
+          <p>Range signal. The metric is compared with its rolling average and expected volatility. A signal appears when it moves outside the range that would normally be expected from its own history.</p>
+          <div class="formula">
+            <div class="formula-row"><span class="formula-label">Central</span><span class="formula-text">rolling average over N periods</span></div>
+            <div class="formula-row"><span class="formula-label">Upper</span><span class="formula-text">central band + <em>k</em> x rolling standard deviation</span></div>
+            <div class="formula-row"><span class="formula-label">Lower</span><span class="formula-text">central band - <em>k</em> x rolling standard deviation</span></div>
+          </div>
+          <div class="panel-note"><strong>Simple logic</strong> The average says where normal is centered. The standard deviation says how much the metric usually moves. k decides how much margin is allowed before a movement becomes unusual.</div>
+          <div class="band-key">
+            <div class="band-key-label">Band colors</div>
+            <div class="band-item"><span class="swatch actual"></span>Actual metric</div>
+            <div class="band-item"><span class="swatch central"></span>Central band</div>
+            <div class="band-item"><span class="swatch upper"></span>Upper band</div>
+            <div class="band-item"><span class="swatch lower"></span>Lower band</div>
+            <div class="band-item signal-item"><span class="swatch signal"></span>Signal</div>
+          </div>
+        </article>
+        <article class="panel">
+          <h3>Momentum</h3>
+          <p>Directional change. The metric is compared with the previous period and the same period last year, so the board can separate short-term movement from seasonal context.</p>
+          <div class="formula">
+            <div class="formula-row"><span class="formula-label">Previous</span><span class="formula-text">current value - previous period value</span></div>
+            <div class="formula-row"><span class="formula-label">Seasonal</span><span class="formula-text">current value - same period last year value</span></div>
+          </div>
+          <div class="panel-note"><strong>Simple logic</strong> Previous-period momentum shows the latest direction. Same-period momentum checks whether the metric is also better or worse than the comparable season last year.</div>
+        </article>
+        <article class="panel">
+          <h3>Persistence</h3>
+          <p>Measures whether a range break is isolated or repeating over consecutive periods. A single break may be noise; repeated breaks suggest the movement is becoming a pattern.</p>
+          <div class="panel-note"><strong>Simple logic</strong> Persistence is the duration layer. It tells whether the signal is fresh, already repeating, or persistent enough to treat as an operating issue.</div>
+        </article>
+        <article class="panel">
+          <h3>Baseline Shift</h3>
+          <p>Structural-change signal. The metric's recent average is compared with its previous baseline to detect whether the normal level itself may have changed.</p>
+          <div class="formula">
+            <div class="formula-row"><span class="formula-label">Recent</span><span class="formula-text">average of the last 3 periods</span></div>
+            <div class="formula-row"><span class="formula-label">Baseline</span><span class="formula-text">average of the previous 12 periods</span></div>
+            <div class="formula-row"><span class="formula-label">Shift</span><span class="formula-text">recent average - previous baseline</span></div>
+          </div>
+          <div class="panel-note"><strong>Simple logic</strong> Range Signal detects abnormal points. Baseline Shift detects whether the normal level itself may be changing. The area between the two lines is shaded green when the shift is favorable and red when it is unfavorable.</div>
+        </article>
+      </div>
+      <div class="signal-settings">
+        <div class="setting-note"><strong>Rolling window</strong> Uses one full year whenever possible: 365 periods for daily data, 52 for weekly, 12 for monthly and 4 for quarterly. This reduces seasonal noise.</div>
+        <div class="setting-note"><strong>Sensitivity margin k</strong> Lower k creates tighter bands and earlier signals. Higher k creates wider bands and fewer, stronger signals.</div>
+        <div class="setting-note"><strong>Scenarios</strong> Early Signal, Normal and Flexible compare different tolerance settings. The user can rename them, change k values or add more scenarios.</div>
+      </div>
+      <div class="example-block">
+        <h3>Simple example with invented numbers</h3>
+        <p>Imagine monthly MRR growth. The last 12 months have an average growth rate of 8.0% and a standard deviation of 2.0%. The user selected k=1.25. This is how the board turns numbers into signals.</p>
+        <div class="example-grid">
+          <article class="example-card">
+            <span>Range signal</span>
+            <strong>Bollinger Bands</strong>
+            <p>Central band = 8.0%. Upper band = 10.5%. Lower band = 5.5%. If current MRR growth is 4.0%, it is below the normal range, so the board reads it as unusually weak growth.</p>
+          </article>
+          <article class="example-card">
+            <span>Early signal</span>
+            <strong>Momentum</strong>
+            <p>Previous-period momentum = -3.0%. Same-period momentum = -5.0% versus last year. The story is not just that growth is low; it is weaker than both the previous month and the comparable season.</p>
+          </article>
+          <article class="example-card">
+            <span>Duration</span>
+            <strong>Persistence</strong>
+            <p>If MRR growth was also outside the range in the previous two months, the signal has lasted 3 consecutive periods. The board treats that as a pattern that deserves attention, not just noise.</p>
+          </article>
+          <article class="example-card">
+            <span>Structural change</span>
+            <strong>Baseline Shift</strong>
+            <p>If the last 3 months average 4.0% growth while the previous 12 months averaged 8.0%, the shift is -4.0%. The chart shades that gap red because the recent baseline is materially worse.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <h2 class="section-title">Metrics included in the MVP</h2>
+      <p class="section-copy">The board focuses on five SaaS KPIs that can be calculated directly from the subscription and churn data. Each metric has its own business interpretation in the Metric Signal Summary, because a negative movement means something different for growth than it does for churn.</p>
+      <div class="metric-groups">
+        <article class="metric-group">
+          <span>Revenue growth</span>
+          <div class="metric-detail">
+            <h3>MRR Growth</h3>
+            <p>Period-over-period growth rate in monthly recurring revenue. The summary distinguishes between slower growth and actual MRR contraction, because both are risks but they do not tell the same story.</p>
+            <code>MRR growth = current MRR / previous MRR - 1</code>
+          </div>
+        </article>
+        <article class="metric-group">
+          <span>Revenue quality</span>
+          <div class="metric-detail">
+            <h3>ARPU Growth</h3>
+            <p>Period-over-period growth rate in average revenue per active customer. The summary reads this as a signal about pricing, plan mix, expansion revenue or customer quality.</p>
+            <code>ARPU growth = current ARPU / previous ARPU - 1</code>
+          </div>
+        </article>
+        <article class="metric-group">
+          <span>Customer growth</span>
+          <div class="metric-detail">
+            <h3>Customer Growth</h3>
+            <p>Period-over-period growth rate in active customers. The summary connects unusual movements to acquisition speed, retention pressure or changes in the active customer base.</p>
+            <code>Customer growth = current active customers / previous active customers - 1</code>
+          </div>
+        </article>
+        <article class="metric-group">
+          <span>Retention</span>
+          <div class="metric-detail">
+            <h3>Customer churn</h3>
+            <p>Share of starting customers that churned during the period. For this metric, lower is better, so the same mathematical movement is interpreted in the opposite business direction from growth metrics.</p>
+            <code>Customer churn = churned customers / starting customers</code>
+          </div>
+        </article>
+        <article class="metric-group">
+          <span>Revenue retention</span>
+          <div class="metric-detail">
+            <h3>Revenue churn</h3>
+            <p>Share of starting MRR lost during the period. The summary reads this as recurring revenue leakage, which matters directly for net revenue retention and revenue quality.</p>
+            <code>Revenue churn = churned MRR / starting MRR</code>
+          </div>
+        </article>
+      </div>
+      <p class="metric-note">These five KPIs keep the MVP focused on metrics that are important, interpretable and directly supported by the Kaggle subscription and churn data. Raw MRR and active customer counts are still useful context, but in a high-growth SaaS they can create noisy range signals because they may trend upward rather than oscillate around a stable mean. LTV is kept out of the signal board because monthly churn can make it jump sharply; the downloadable CSV keeps raw LTV and a smoothed LTV using 6-period average churn. CAC is not estimated because the dataset does not provide acquisition or marketing spend.</p>
+    </section>
+
+    <section class="wrap">
+      <h2 class="section-title">Context and interpretation</h2>
+      <p class="section-copy">A signal is not automatically a problem. Some businesses have normal seasonal patterns: a June spike, a summer slowdown, a renewal month or a post-campaign decline. The board keeps that context visible with repeated x-axis labels across charts, same-period momentum, persistence reads and business-language summaries that explain what each movement may mean.</p>
+      <div class="action-panel">
+        <h3>Known business events</h3>
+        <p>The board lets the user annotate events such as price changes, large enterprise deals or campaign launches. An event can be added as a visual note or used to rebase the rolling bands from that month. This mirrors the analyst logic of saying: this period should not be compared with the old baseline because the business changed here.</p>
+      </div>
+      <div class="action-panel">
+        <h3>Final readout</h3>
+        <p>The Metric Signal Summary is designed to tell a story rather than repeat the chart. It explains whether growth is merely slower or actually contracting, whether churn is unusually high or favorably low, whether momentum is short-term or seasonal, whether the signal is fresh or persistent, and whether the recent baseline has moved to a new level.</p>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="cta-band">
+        <div>
+          <h2>Explore the SaaS Signals Board</h2>
+          <p>Choose a SaaS metric, set the data frequency, compare custom k scenarios, annotate known events and inspect range, momentum, persistence and baseline-shift signals with narrative business interpretation.</p>
+        </div>
+        <a class="button primary" href="dashboard.html">Open SaaS Signals Board</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    Built with Python and pandas using synthetic monthly SaaS subscription data from Kaggle.
+  </footer>
+</body>
+</html>

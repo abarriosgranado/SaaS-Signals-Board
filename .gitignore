@@ -1,0 +1,11 @@
+.venv/
+.pycache/
+__pycache__/
+*.pyc
+
+data/raw/*.csv
+outputs/*.csv
+outputs/*.svg
+outputs/**/*.csv
+outputs/**/*.svg
+.DS_Store
